@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDY TOOL</title>
+</head>
+<body>
+    <div class="tpbr" id="topbar"></div>
+    <div class="tpbr" id="btnbg"></div>
+    <button class="tpbr" id="nxtq">NEXT Q</button>
+    <button class="tpbr" id="prq"> PRV. Q</button>
+    <button class="tpbr" id="phy"> PHY</button>
+    <button class="tpbr" id="chem"> CHEM</button>
+    <button class="tpbr" id="math"> MATH</button>
+    <button class="tpbr" id = "reveal">REVEAL</button>
+    <div id="blrbg"></div>
+    <div id="qno">0</div>
+    <div id="logo">ADI'S QUESTION BANK</div>
+    <canvas id="mycan"></canvas>
+    
+    <style>
+        body{
+            background-color: rgb(1, 14, 43);
+            padding: 0%;
+            margin: 0%;
+            overflow-y: hidden;
+        }
+
+        #logo {
+            position: absolute;
+            left: 40%;
+            top: 2%;
+            max-width: 20%;
+            color: aliceblue;
+            font-size: 2.3vw;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        #qno {
+            position: absolute;
+            width: 2.5%;
+            height: 5%;
+            background-color: brown;
+            top: 15%;
+            border-radius: 6px;
+            color: aliceblue;
+            font-size: 1.8vw;
+            text-align: left;
+            margin-left: 0px;
+            padding-left: 0%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-left: 1.5%;
+            padding-top: 1%;
+        }
+        #reveal{
+
+            position: fixed;
+            top: 2%;
+            right: 18%;
+            background-color: aqua;
+            height: 8%;
+            width: 8%;
+            min-width: 40px;
+            max-width: 80px;
+            border-radius: 90px;
+        }
+
+        #blrbg{
+            position: fixed;
+            background-color: rgba(1, 14, 43, 1);
+            filter: blur(50px);
+            width: 100%;
+            height: 65%;
+            bottom: 0%;
+            z-index: +2;
+        }
+        #mycan {
+            position: fixed;
+            background-color: rgb(1, 14, 43);
+            stroke: rgb(1, 14, 43);
+            /* filter: grayscale(100%); */
+            top: 15%;
+            left: 50%;
+            height: 85%;
+            width: 70%;
+            min-width: 600px;
+            transform: translate(-50%,0);
+            z-index: -1;
+        }
+        #topbar{
+            background-color: rgb(25, 39, 68);
+            position: fixed;
+            width: 100%;
+            height: 15%;
+            z-index: -2;
+        }
+
+        #btnbg{
+            position: fixed;
+            top: 2%;
+            left: 2%;
+            background-color: rgb(0, 161, 153);
+            height: 8%;
+            width: 22%;
+            min-width: 40px;
+            /* max-width: 80px; */
+            border-radius: 20px;
+            z-index: -1;
+        }
+        #nxtq {
+            position: fixed;
+            top: 2%;
+            right: 2%;
+            background-color: aqua;
+            height: 8%;
+            width: 8%;
+            min-width: 40px;
+            max-width: 80px;
+            border-radius: 90px;
+        }
+
+
+        #phy {
+            position: fixed;
+            top: 2%;
+            left: 2%;
+            background-color: rgb(0, 161, 153);
+            height: 8%;
+            width: 8%;
+            min-width: 40px;
+            max-width: 80px;
+            border-radius: 20px;
+            border-width: 0px;
+        }
+
+        #chem {
+            position: fixed;
+            top: 2%;
+            left: 10%;
+            background-color: rgb(0, 161, 153);
+            height: 8%;
+            width: 8%;
+            min-width: 50px;
+            max-width: 80px;
+            border-radius: 20px;
+            border-width: 0px;
+        }
+
+        #math{
+            position: fixed;
+            top: 2%;
+            left: 18%;
+            background-color: rgb(0, 161, 153);
+            height: 8%;
+            width: 8%;
+            min-width: 50px;
+            max-width: 80px;
+            border-radius: 20px;
+            border-width: 0px;
+            
+        }
+        #prq {
+            position: fixed;
+            top: 2%;
+            right: 10%;
+            background-color: aqua;
+            height: 8%;
+            width: 8%;
+            min-width: 40px;
+            max-width: 80px;
+            border-radius: 90px;
+        }
+    </style>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.7.107/build/pdf.min.js"></script>
+
+<script>
+    var nextbutton = document.getElementById("nxtq")
+    var prvq = document.getElementById("prq")
+    var phy = document.getElementById("phy")
+    var chem = document.getElementById("chem")
+    var math =document.getElementById("math")
+    var i = 'PHY Q BANK.pdf'
+    var blrbg = document.getElementById("blrbg")
+    var reveal = document.getElementById("reveal")
+    var qno = document.getElementById("qno")
+    var qindex = []
+    var prindex = 2
+    var t = 0
+    var rand2
+    var rptarr = []
+    var anind = 1
+    var mycanvas = document.getElementById("mycan");
+    var ctx = mycanvas.getContext("2d",{willReadFrequently: true});
+
+
+    blrbg.blur()
+reveal.style.display = "none"
+    reveal.addEventListener("click",()=>{
+        blrbg.style.display = "none"
+    })
+
+    nextbutton.addEventListener("click",()=>{
+    
+    pdfjsLib.getDocument(i).promise.then(doc=>{
+        var x = doc._pdfInfo.numPages;
+        var rand = Math.floor(Math.random()*x+1)
+        // console.log(rand)
+        doc.getPage(rand).then(page =>{
+            // var mycanvas = document.getElementById("mycan");
+            // var ctx = mycanvas.getContext("2d");
+            mycanvas.width = window.screen.width*0.69
+            mycanvas.height = window.screen.height*0.69
+            var viewport = page.getViewport({scale: mycanvas.width / page.getViewport({scale: 1}).width});
+            var viewport = page.getViewport({scale: mycanvas.height / page.getViewport({scale: 1}).height});
+            qno.innerHTML = rand
+            page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            })
+        })
+        qindex.push(rand)
+        console.log(qindex)
+        console.log("rand",rand)
+        blrbg.style.display = "block"
+        prindex = 2
+        console.log("prindex",prindex)
+        console.log("t",t)
+
+    })
+    })
+    prvq.addEventListener("click",()=>{
+
+        t = t + 1
+        if(t == 1){
+        alert("IF YOU VIEW PREVIOUS QUESTION, THEN IF YOU PRESS THE NEXT QUESTION BUTTON, YOU WILL GET A NEW RANDOM QUESTION NOT NECESSARILY THE ONE FROM WHICH YOU LEFT OFF")
+        }
+        rand2 = qindex[qindex.length - prindex]
+        console.log("rand2",rand2)
+        console.log("prindex",prindex)
+        prindex = prindex + 1
+        console.log("t",t)
+        if(t > 0){
+            rptarr.push(rand2)
+            rptarr.reverse()
+            console.log("rptarr",rptarr)
+        }
+        pdfjsLib.getDocument(i).promise.then(doc=>{
+
+        doc.getPage(rand2).then(page =>{
+            var mycanvas = document.getElementById("mycan");
+            var ctx = mycanvas.getContext("2d");
+            mycanvas.width = window.screen.width*0.69
+            mycanvas.height = window.screen.height*0.69
+            var viewport = page.getViewport({scale: mycanvas.width / page.getViewport({scale: 1}).width});
+            var viewport = page.getViewport({scale: mycanvas.height / page.getViewport({scale: 1}).height});
+            qno.innerHTML = rand2
+            page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            })
+        })
+    })
+
+        })
+
+    nextbutton.style.display = "none"
+    prvq.style.display = "none"
+    
+    phy.addEventListener("click",()=>{
+        i = 'PHY Q BANK.pdf'
+        nextbutton.style.display = "block"
+        prvq.style.display = "block"
+        phy.style.backgroundColor = "aqua"
+        chem.style.background = "rgb(0,161,153)"
+        math.style.background = "rgb(0,161,153)"
+        reveal.style.display = "block"
+        qindex.length = 0
+    })
+
+    chem.addEventListener("click",()=>{
+        i = 'Atomic Structure 07 _ Class Notes __ Arjuna JEE 2024.pdf'
+        nextbutton.style.display = "block"
+        prvq.style.display = "block"
+        chem.style.background = "aqua"
+        phy.style.background = "rgb(0,161,153)"
+        math.style.background = "rgb(0,161,153)"
+        qindex.length = 0
+        reveal.style.display = "block"
+    })
+
+    math.addEventListener("click",()=>{
+        qindex.length = 0
+        i = 'MATHS Q BANK.pdf'
+        nextbutton.style.display = "block"
+        prvq.style.display = "block"
+        chem.style.background = "rgb(0,161,153)"
+        phy.style.background = "rgb(0,161,153)"
+        math.style.background = "aqua"
+        reveal.style.display = "block"
+    })
+
+</script>
+</html>
