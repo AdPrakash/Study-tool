@@ -79,7 +79,6 @@
             position: fixed;
             background-color: rgb(1, 14, 43);
             stroke: rgb(1, 14, 43);
-            /* filter: grayscale(100%); */
             top: 15%;
             left: 50%;
             height: 85%;
@@ -104,7 +103,6 @@
             height: 8%;
             width: 22%;
             min-width: 40px;
-            /* max-width: 80px; */
             border-radius: 20px;
             z-index: -1;
         }
@@ -177,27 +175,27 @@
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.7.107/build/pdf.min.js"></script>
 
 <script>
-    var nextbutton = document.getElementById("nxtq")
-    var prvq = document.getElementById("prq")
-    var phy = document.getElementById("phy")
-    var chem = document.getElementById("chem")
-    var math =document.getElementById("math")
+    const nextbutton = document.getElementById("nxtq")
+    const prvq = document.getElementById("prq")
+    const phy = document.getElementById("phy")
+    const chem = document.getElementById("chem")
+    const math =document.getElementById("math")
     var i = 'PHY Q BANK.pdf'
-    var blrbg = document.getElementById("blrbg")
-    var reveal = document.getElementById("reveal")
-    var qno = document.getElementById("qno")
+    const blrbg = document.getElementById("blrbg")
+    const reveal = document.getElementById("reveal")
+    const qno = document.getElementById("qno")
     var qindex = []
     var prindex = 2
     var t = 0
     var rand2
     var rptarr = []
     var anind = 1
-    var mycanvas = document.getElementById("mycan");
-    var ctx = mycanvas.getContext("2d",{willReadFrequently: true});
+    const mycanvas = document.getElementById("mycan");
+    const ctx = mycanvas.getContext("2d",{willReadFrequently: true});
 
 
     blrbg.blur()
-reveal.style.display = "none"
+    reveal.style.display = "none"
     reveal.addEventListener("click",()=>{
         blrbg.style.display = "none"
     })
@@ -207,10 +205,9 @@ reveal.style.display = "none"
     pdfjsLib.getDocument(i).promise.then(doc=>{
         var x = doc._pdfInfo.numPages;
         var rand = Math.floor(Math.random()*x+1)
-        // console.log(rand)
+        
         doc.getPage(rand).then(page =>{
-            // var mycanvas = document.getElementById("mycan");
-            // var ctx = mycanvas.getContext("2d");
+
             mycanvas.width = window.screen.width*0.69
             mycanvas.height = window.screen.height*0.69
             var viewport = page.getViewport({scale: mycanvas.width / page.getViewport({scale: 1}).width});
