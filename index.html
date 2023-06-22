@@ -69,7 +69,7 @@
         #blrbg{
             position: fixed;
             background-color: rgba(1, 14, 43, 1);
-            filter: blur(50px);
+            filter: blur(20px);
             width: 100%;
             height: 65%;
             bottom: 0%;
@@ -192,7 +192,7 @@
     var anind = 1
     const mycanvas = document.getElementById("mycan");
     const ctx = mycanvas.getContext("2d",{willReadFrequently: true});
-
+    let som
 
     blrbg.blur()
     reveal.style.display = "none"
@@ -201,8 +201,8 @@
     })
 
     nextbutton.addEventListener("click",()=>{
-    
-    pdfjsLib.getDocument(i).promise.then(doc=>{
+
+    som.promise.then(doc=>{
         var x = doc._pdfInfo.numPages;
         var rand = Math.floor(Math.random()*x+1)
         
@@ -218,6 +218,8 @@
                 viewport: viewport
             })
         })
+        var audio = new Audio('Success Chime_LuckStock.mp3');
+        audio.play();
         console.log("no. of pages",x)
         qindex.push(rand)
         console.log(qindex)
@@ -245,7 +247,7 @@
             rptarr.reverse()
             console.log("rptarr",rptarr)
         }
-        pdfjsLib.getDocument(i).promise.then(doc=>{
+        som.promise.then(doc=>{
 
         doc.getPage(rand2).then(page =>{
             var mycanvas = document.getElementById("mycan");
@@ -268,7 +270,7 @@
     prvq.style.display = "none"
     
     phy.addEventListener("click",()=>{
-        i = 'PHY Q BANK.pdf'
+        som = pdfjsLib.getDocument('PHY Q BANK.pdf')
         nextbutton.style.display = "block"
         prvq.style.display = "block"
         phy.style.backgroundColor = "aqua"
@@ -279,7 +281,7 @@
     })
 
     chem.addEventListener("click",()=>{
-        i = 'Atomic Structure 07 _ Class Notes __ Arjuna JEE 2024.pdf'
+        som = pdfjsLib.getDocument('Atomic Structure 07 _ Class Notes __ Arjuna JEE 2024.pdf')
         nextbutton.style.display = "block"
         prvq.style.display = "block"
         chem.style.background = "aqua"
@@ -290,8 +292,8 @@
     })
 
     math.addEventListener("click",()=>{
+        som = pdfjsLib.getDocument('MATHS Q BANK.pdf')
         qindex.length = 0
-        i = 'MATHS Q BANK.pdf'
         nextbutton.style.display = "block"
         prvq.style.display = "block"
         chem.style.background = "rgb(0,161,153)"
