@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDY TOOL</title>
 </head>
-<body>
+<body onload="myFunction()">
     <div class="tpbr" id="topbar"></div>
     <div class="tpbr" id="btnbg"></div>
     <button class="tpbr" id="nxtq">NEXT Q</button>
@@ -193,7 +193,9 @@
     const mycanvas = document.getElementById("mycan");
     const ctx = mycanvas.getContext("2d",{willReadFrequently: true});
     let som
-
+    let psom
+    let csom
+    let msom
     blrbg.blur()
     reveal.style.display = "none"
     reveal.addEventListener("click",()=>{
@@ -269,7 +271,7 @@
     prvq.style.display = "none"
     
     phy.addEventListener("click",()=>{
-        som = pdfjsLib.getDocument('PHY Q BANK.pdf')
+        som = psom
         nextbutton.style.display = "block"
         prvq.style.display = "block"
         phy.style.backgroundColor = "aqua"
@@ -280,7 +282,7 @@
     })
 
     chem.addEventListener("click",()=>{
-        som = pdfjsLib.getDocument('Atomic Structure 07 _ Class Notes __ Arjuna JEE 2024.pdf')
+        som = csom
         nextbutton.style.display = "block"
         prvq.style.display = "block"
         chem.style.background = "aqua"
@@ -291,7 +293,7 @@
     })
 
     math.addEventListener("click",()=>{
-        som = pdfjsLib.getDocument('MATHS Q BANK.pdf')
+        som = msom
         qindex.length = 0
         nextbutton.style.display = "block"
         prvq.style.display = "block"
@@ -300,6 +302,12 @@
         math.style.background = "aqua"
         reveal.style.display = "block"
     })
+
+    function myFunction() {
+        psom = pdfjsLib.getDocument('PHY Q BANK.pdf')
+        csom = pdfjsLib.getDocument('Atomic Structure 07 _ Class Notes __ Arjuna JEE 2024.pdf')
+        msom = pdfjsLib.getDocument('MATHS Q BANK.pdf')
+    }
 
 </script>
 </html>
