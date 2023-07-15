@@ -19,7 +19,8 @@
     <div id="qno">0</div>
     <div id="logo">ADI'S QUESTION BANK</div>
     <canvas id="mycan"></canvas>
-    
+    <div id="timer"></div>
+    <div id="startbtn">START</div>
     <style>
         body{
             background-color: rgb(40,43,48);
@@ -28,14 +29,36 @@
             overflow-y: hidden;
         }
 
+        #startbtn {
+            position: absolute;
+            background-color: rgb(114,137,218);
+            text-align: center;
+            
+            left: 45%;
+            top: 40%;
+            width: 100px;
+            height: 50px;
+            z-index: +2;
+        }
+
+        #timer {
+            position: absolute;
+            left: 45%;
+            top: 10%;
+            width: 10%;
+            font-size: 2vw;
+            height: 10%;
+            color: white;
+            z-index: +5;
+        }
         #logo {
             position: absolute;
-            left: 40%;
+            left: 42%;
             top: 2%;
             max-width: 20%;
             color: rgb(76,79,83);
             text-shadow: 2px 2px rgb(114,137,218);
-            font-size: 2.3vw;
+            font-size: 1.5vw;
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
         #qno {
@@ -208,6 +231,45 @@
     let psom
     let csom
     let msom
+    var timesec = 59
+    var timemin = 59
+    var timehr = 2
+    var colon = ":"
+    const timr = document.getElementById("timer")
+    const start = document.getElementById("startbtn")
+    
+    start.addEventListener("click",()=>{
+    var dur = prompt("enter test duration",3)
+    timehr = dur - 1
+ 
+    start.style.display = "none"
+    const inte = setInterval(timer,1000)
+    function timer () {
+        
+        timesec--
+        if(timesec == 0 ){
+            timemin--
+            timesec = 59
+        }
+        if(timemin == 0 && timehr > 0 ){
+            timehr--
+            timemin = 59
+        }
+        if(timehr == 0 && timemin == 0 && timesec == 1){
+            clearInterval(inte)
+            timehr = "TIME'S"
+            timemin= " "
+            timesec = "UP"
+            colon = ""
+            // alert("TIME UP")
+        }
+        if(timehr == 0 && timemin <= 10){
+            timr.style.color = "red"
+        }
+        timr.innerHTML = timehr+colon+timemin+colon+timesec
+    }
+    })
+
     blrbg.blur()
     reveal.style.display = "none"
     reveal.addEventListener("click",()=>{
